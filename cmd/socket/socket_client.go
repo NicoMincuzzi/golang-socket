@@ -1,4 +1,4 @@
-package main
+package socket
 
 import (
 	"fmt"
@@ -11,19 +11,19 @@ const (
 	message = "Ping\r\n\r\n"
 )
 
-type SocketClient struct {
+type client struct {
 	connectionType string
 	host           string
 	port           string
 }
 
-func New(connectionType string, host string, port string) SocketClient {
-	return SocketClient{connectionType, host, port}
+func New(connectionType string, host string, port string) client {
+	return client{connectionType, host, port}
 }
 
-func (client SocketClient) run() {
-	address := client.host + ":" + client.port
-	conn, err := net.Dial(client.connectionType, address)
+func (c client) Run() {
+	address := c.host + ":" + c.port
+	conn, err := net.Dial(c.connectionType, address)
 	if err != nil {
 		fmt.Println("Error connecting:", err.Error())
 		os.Exit(1)

@@ -1,10 +1,8 @@
 package main
 
+import "golang-socket/cmd/socket"
+
 func main() {
-	client := SocketClient{
-		connectionType: "tcp",
-		host:           "192.168.1.243",
-		port:           "8070",
-	}
-	client.run()
+	client := socket.New("tcp", "192.168.1.243", "8070")
+	client.Run()
 }
