@@ -5,16 +5,24 @@ import (
 	"net"
 )
 
-func messageReceiver(conn net.Conn) {
+const (
+	defaultMessage = "Ping\r\n\r\n"
+)
+
+type message struct {
+	connection net.Conn
+}
+
+func (m message) messageReceiver() {
 	buff := make([]byte, 1024)
-	n, _ := conn.Read(buff)
+	n, _ := m.connection.Read(buff)
 	log.Printf("Receive: %s", buff[:n])
 }
 
-func messageSender(conn net.Conn) {
-	_, err := conn.Write([]byte(message))
+func (m message) messageSender() {
+	_, err := m.connection.Write([]byte(defaultMessage))
 	if err != nil {
-		log.Println("Cannot send message:", err.Error())
+		log.Println("Cannot send defaultMessage:", err.Error())
 	}
-	log.Printf("Send: %s", message)
+	log.Printf("Send: %s", defaultMessage)
 }

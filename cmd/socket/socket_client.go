@@ -6,10 +6,6 @@ import (
 	"os"
 )
 
-const (
-	message = "Ping\r\n\r\n"
-)
-
 type client struct {
 	connectionType string
 	host           string
@@ -21,15 +17,23 @@ func New(connectionType string, host string, port string) client {
 }
 
 func (c client) Run() {
+	conn := c.connect()
+
+	defer conn.Close()
+
+	message := message{
+		connection: conn,
+	}
+	message.messageSender()
+	message.messageReceiver()
+}
+
+func (c client) connect() net.Conn {
 	address := c.host + ":" + c.port
 	conn, err := net.Dial(c.connectionType, address)
 	if err != nil {
 		log.Println("Error connecting:", err.Error())
 		os.Exit(1)
 	}
-
-	defer conn.Close()
-
-	messageSender(conn)
-	messageReceiver(conn)
+	return conn
 }
