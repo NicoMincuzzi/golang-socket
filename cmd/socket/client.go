@@ -1,5 +1,7 @@
 package socket
 
+import "net"
+
 type client struct {
 	connectionType string
 	host           string
@@ -7,5 +9,6 @@ type client struct {
 }
 
 type Client interface {
-	Run()
+	Connect() net.Conn
+	Run(connection net.Conn)
 }

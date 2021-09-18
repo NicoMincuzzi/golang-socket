@@ -7,14 +7,10 @@ import (
 )
 
 func New(connectionType string, host string, port string) Client {
-	return &client{connectionType, host, port}
+	return client{connectionType, host, port}
 }
 
-func (c client) Run() {
-	conn := c.connect()
-
-	defer conn.Close()
-
+func (c client) Run(conn net.Conn) {
 	message := message{
 		connection: conn,
 	}
@@ -22,7 +18,7 @@ func (c client) Run() {
 	message.messageReceiver()
 }
 
-func (c client) connect() net.Conn {
+func (c client) Connect() net.Conn {
 	address := c.host + ":" + c.port
 	conn, err := net.Dial(c.connectionType, address)
 	if err != nil {
