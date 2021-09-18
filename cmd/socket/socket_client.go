@@ -6,12 +6,6 @@ import (
 	"os"
 )
 
-type client struct {
-	connectionType string
-	host           string
-	port           string
-}
-
 func New(connectionType string, host string, port string) Client {
 	return &client{connectionType, host, port}
 }
